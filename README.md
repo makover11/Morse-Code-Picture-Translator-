@@ -1,89 +1,105 @@
-# Morse Code Picture Translator — Chrome Extension (Manifest V3)
+# Morse Code Picture Translator
 
-A production-ready, fully functional Google Chrome Extension built according to the strict **Manifest V3** standard with **Zero-CSP violations**, offline-first architecture, dual-view UI (compact popup + full-screen studio), and system-level Chrome integration.
+**Morse Code Picture Translator** is a free, offline Chrome extension that converts text into Morse code, decodes Morse code from pictures, generates customizable Morse code images, and creates Morse code audio.
 
----
+Built with HTML, CSS, and JavaScript using Chrome Manifest V3, the extension offers a simple interface for students, developers, educators, amateur radio enthusiasts, and Morse code learners.
 
-## 🚀 Key Features
+🌐 **Try the Online Tool:** [Morse Code Picture Translator](https://justmorsecodetranslator.com/morse-code-translator-picture/)
 
-1. **Dual-View UI (Popup & Full Tab Studio)**:
-   - **Popup Mode (`popup.html`)**: Compact 500px × 560px window with an organized tab bar (`Translate & Canvas`, `Scan Picture`, `Audio Synth`, `Chart`) preventing awkward scrollbars. Includes a one-click **"Full Tab"** button.
-   - **Studio Mode (`fulltab.html`)**: Expansive multi-column dashboard for large screens with high-definition canvas rendering, audio synthesis controls, and interactive reference tables.
+## Features
 
-2. **Bidirectional Live Translation**:
-   - Instant text-to-Morse and Morse-to-text conversion.
-   - Character and Morse symbol counter.
-   - Swap button to flip input order.
-   - One-click copy with toast notifications.
+### Text to Morse Code Translator
+- Instantly convert text into Morse code.
+- Decode Morse code into readable text.
+- Supports letters, numbers, and common punctuation.
+- Copy translated results with one click.
+- Real-time character and Morse symbol counters.
 
-3. **Morse Code Picture Generator (HTML5 Canvas)**:
-   - Visual rendering of Morse dots and dashes.
-   - Adjustable symbol size slider (10px–60px).
-   - Custom foreground and background color pickers.
-   - One-click **Download Picture (PNG)** export.
+### Morse Code Picture Generator
+- Convert Morse code into visual dots and dashes.
+- Customize the picture's foreground and background colors.
+- Adjust symbol sizes from 10px to 60px.
+- Preview generated Morse code images.
+- Download Morse code pictures in PNG format.
 
-4. **100% Offline Image Morse Decoder (BFS Computer Vision)**:
-   - Drag-and-drop or browse image upload (PNG, JPG, WebP).
-   - **Zero external CDNs or remote scripts**: Uses a built-in 4-connected Breadth-First Search (BFS) blob detection and luminance thresholding algorithm directly in browser memory.
-   - 100% private and offline — zero data leaves the user's computer.
+### Morse Code Picture Decoder
+- Upload images containing Morse code symbols.
+- Supports PNG, JPG, and WebP images.
+- Uses built-in image processing to recognize dots and dashes.
+- Decodes recognized Morse sequences into readable text.
+- Processes images locally without requiring an internet connection.
 
-5. **Web Audio Synthesizer & WAV Exporter**:
-   - **Tone engines**: CW Radio (sine wave with envelope anti-click ramp) & Mechanical Telegraph Sounder (click impulses).
-   - Adjustable Speed (5–50 WPM), Pitch (300–1000 Hz), and Volume (0–100%).
-   - Visual Morse Lightbulb indicator & tool flash animation synchronized with audio.
-   - Optional vibration feedback (`navigator.vibrate`) and repeat playback.
-   - **Export Audio (.wav)**: Generates 44.1kHz 16-bit PCM WAV audio using `OfflineAudioContext`.
+### Morse Code Audio Generator
+- Generate and play Morse code sounds.
+- Choose CW radio tones or mechanical telegraph sounds.
+- Adjust playback speed, pitch, and volume.
+- Use visual signal indicators and repeat playback.
+- Download generated Morse code audio in WAV format.
 
-6. **Chrome Integration & Storage**:
-   - **Storage Persistence**: Uses `chrome.storage.local` to preserve user inputs, sliders, colors, and toggles across browser restarts.
-   - **Right-Click Context Menu**: Highlight text on any website and right-click -> *"Translate to Morse Code"* to instantly load it into the Studio.
-   - **Keyboard Shortcut**: Press `Ctrl+Shift+U` (or `Cmd+Shift+U` on macOS) to open the extension from anywhere.
+### Chrome Extension Features
+- Compact popup interface for quick translation.
+- Full-screen studio for advanced controls.
+- Right-click selected text to translate it into Morse code.
+- Keyboard shortcut for quick access.
+- Local storage to preserve settings.
+- Offline functionality without external libraries.
 
----
+## How to Use
 
-## 📂 Project Structure
+1. Open the Morse Code Picture Translator extension.
+2. Select text translation, picture scanning, or audio generation.
+3. Enter text, paste Morse code, or upload a supported image.
+4. View the translated or generated result.
+5. Copy the result or download a PNG or WAV file.
 
-```text
-morse-picture-translator-chrome/
-├── manifest.json         # Manifest V3 configuration & permissions
-├── popup.html            # Clean HTML popup structure (Zero inline JS)
-├── popup.css             # Scoped popup styles & custom sliders
-├── popup.js              # Popup controller & event listeners
-├── fulltab.html          # Full-screen Studio mode layout
-├── fulltab.css           # Expansive Studio dashboard styles
-├── fulltab.js            # Studio controller & clipboard integration
-├── morse-core.js         # Shared engine: translation, canvas, BFS scanner, audio & WAV
-├── background.js         # Service worker: context menus & keyboard shortcuts
-├── generate-icons.js     # Standalone icon generator
-└── icons/
-    ├── icon.svg          # High-resolution vector icon
-    ├── icon16.png        # 16x16 toolbar icon
-    ├── icon32.png        # 32x32 retina icon
-    ├── icon48.png        # 48x48 extensions management icon
-    └── icon128.png       # 128x128 Chrome Web Store icon
-```
+## Installation
 
----
+1. Download or clone this repository.
+2. Extract the project files if downloaded as a ZIP.
+3. Open Google Chrome and navigate to `chrome://extensions`.
+4. Enable **Developer Mode**.
+5. Click **Load unpacked**.
+6. Select the project folder containing `manifest.json`.
+7. Pin Morse Code Picture Translator to your browser toolbar.
 
-## 🛠️ How to Install in Google Chrome (Load Unpacked)
+## Keyboard Shortcuts
 
-1. Open **Google Chrome**.
-2. In the URL address bar, enter:
-   ```text
-   chrome://extensions
-   ```
-3. In the top-right corner, toggle **Developer mode** to **ON**.
-4. Click the **Load unpacked** button in the top-left corner.
-5. Browse to and select the folder:
-   ```text
-   c:\Users\realb\Downloads\soft rank\morse-picture-translator-chrome
-   ```
-6. The extension **Morse Code Picture Translator** will now appear in your extensions list!
-7. Click the extension puzzle icon in the Chrome toolbar and pin **Morse Code Picture Translator** for instant access.
+**Windows/Linux:** `Ctrl + Shift + U`
 
----
+**macOS:** `Command + Shift + U`
 
-## ⌨️ Shortcuts & Context Menus
+You can also select text on a webpage, right-click, and choose the Morse code translation option to open the full-screen studio.
 
-- **Open Extension**: Press `Ctrl+Shift+U` (Windows/Linux) or `Command+Shift+U` (macOS).
-- **Translate Web Selection**: Select any text on a webpage -> Right-click -> Select **"Translate '[selection]' to Morse Code"**. Studio mode will open automatically with the text translated.
+## Technologies Used
+
+- HTML5
+- CSS3
+- JavaScript
+- Chrome Extensions Manifest V3
+- HTML5 Canvas API
+- Web Audio API
+- Chrome Storage API
+- Browser Context Menus
+
+## Privacy and Offline Processing
+
+Morse Code Picture Translator is designed to work locally in your browser. Text conversion, image processing, and Morse audio generation do not require uploading user content to a remote server.
+
+The extension uses local browser storage to save preferences and translation settings.
+
+## Who Can Use It?
+
+- Students learning Morse code
+- Teachers and educational institutions
+- Amateur radio operators
+- Developers and programmers
+- Morse code hobbyists
+- Communication and electronics enthusiasts
+
+## Contributing
+
+Contributions are welcome. You can fork the repository, suggest improvements, report issues, or submit pull requests to help improve the extension.
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
