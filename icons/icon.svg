@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <!-- Background Card -->
+  <rect x="4" y="4" width="120" height="120" rx="26" fill="url(#bgGrad)" stroke="#334155" stroke-width="2"/>
+  <!-- Picture Frame Outline -->
+  <rect x="18" y="18" width="92" height="92" rx="14" fill="none" stroke="#38bdf8" stroke-width="3" stroke-dasharray="8 6" opacity="0.6"/>
+  <!-- Top Flash Lens Indicator -->
+  <circle cx="64" cy="30" r="5" fill="#38bdf8" opacity="0.9"/>
+  <!-- Morse Code: Dot - Dash - Dot (• — •) -->
+  <g filter="url(#glow)">
+    <circle cx="38" cy="66" r="10" fill="#facc15"/>
+    <rect x="52" y="58" width="28" height="16" rx="8" fill="#facc15"/>
+    <circle cx="94" cy="66" r="10" fill="#facc15"/>
+  </g>
+  <!-- Picture Wave / Baseline -->
+  <path d="M28 92 C 45 84, 55 98, 70 90 C 85 82, 95 94, 100 88" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+</svg>

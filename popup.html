@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morse Code Picture Translator</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="mc-translator-app">
+    <!-- Header with Branding, Signal Indicator, and Full Page Button -->
+    <header class="app-header">
+      <div class="brand">
+        <img src="icons/icon32.png" alt="Morse Logo" class="brand-icon">
+        <div class="brand-text">
+          <h1 class="brand-title">Morse Picture Translator</h1>
+          <span class="brand-badge">MV3 Offline</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <!-- Live Visual Signal Lightbulb -->
+        <svg id="top-lightbulb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-label="Signal Light" title="Morse Signal Indicator">
+          <path d="M9 18h6"></path>
+          <path d="M10 22h4"></path>
+          <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A6 6 0 1 0 7.5 11.5c.76.76 1.23 1.52 1.41 2.5"></path>
+        </svg>
+        <!-- Open in Full Tab Button -->
+        <button id="btn-open-tab" class="btn-icon-label" title="Open Full Screen Studio" aria-label="Open Full Screen Studio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+          <span>Full Tab</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs Bar -->
+    <nav class="nav-tabs" aria-label="App Modules">
+      <button class="nav-tab active" data-tab="tab-translate" id="nav-btn-translate">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"></path></svg>
+        <span>Translate &amp; Picture</span>
+      </button>
+      <button class="nav-tab" data-tab="tab-scanner" id="nav-btn-scanner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        <span>Scan Picture</span>
+      </button>
+      <button class="nav-tab" data-tab="tab-audio" id="nav-btn-audio">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        <span>Audio Synth</span>
+      </button>
+      <button class="nav-tab" data-tab="tab-chart" id="nav-btn-chart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
+        <span>Chart</span>
+      </button>
+    </nav>
+
+    <!-- TAB 1: Translate & Picture Canvas -->
+    <section class="tab-content active" id="tab-translate">
+      <!-- Mode Toggle -->
+      <div class="mode-toggle-bar">
+        <button class="mode-btn mc-active" id="mode-btn-morse" type="button">
+          <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"></circle><rect x="9" y="10.5" width="10" height="3" rx="1.5"></rect></svg>
+          Morse Code to Text
+        </button>
+        <button class="mode-btn" id="mode-btn-text" type="button">
+          <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h14"></path></svg>
+          Text to Morse Code
+        </button>
+      </div>
+
+      <!-- Text / Morse Grid -->
+      <div class="grid">
+        <!-- Box: Plain Text -->
+        <div class="box" id="box-text">
+          <div class="box-header">
+            <span>Plain Text</span>
+            <span class="badge-count" id="count-text">0 chars</span>
+          </div>
+          <textarea id="text-input" placeholder="Type or paste plain text here..." spellcheck="false"></textarea>
+          <div class="box-footer">
+            <button id="btn-copy-text" type="button" class="btn-sub">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              Copy
+            </button>
+            <button id="btn-clear-text" type="button" class="btn-sub">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              Clear
+            </button>
+          </div>
+        </div>
+
+        <!-- Swap Button -->
+        <div class="swap-container">
+          <button id="swap-btn" type="button" title="Swap Text and Morse boxes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3L4 7l4 4"></path><path d="M4 7h16"></path><path d="M16 21l4-4-4-4"></path><path d="M20 17H4"></path></svg>
+          </button>
+        </div>
+
+        <!-- Box: Morse Code -->
+        <div class="box" id="box-morse">
+          <div class="box-header">
+            <span>Morse Code</span>
+            <span class="badge-count" id="count-morse">0 symbols</span>
+          </div>
+          <textarea id="morse-input" placeholder=".- -... -.-. (use / for word space)" spellcheck="false"></textarea>
+          <div class="box-footer">
+            <button id="btn-copy-morse" type="button" class="btn-sub">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              Copy
+            </button>
+            <button id="btn-clear-morse" type="button" class="btn-sub">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              Clear
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Morse Code Picture Canvas Panel -->
+      <div class="canvas-panel">
+        <div class="canvas-header">
+          <span class="panel-title">Morse Code Picture Generator</span>
+          <span class="canvas-dimensions" id="canvas-dim-badge">560 × 140</span>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="mc-canvas"></canvas>
+        </div>
+        <div class="canvas-controls">
+          <div class="slider-group control-item-size">
+            <label for="mc-size-slider">Symbol Size <span id="mc-size-val">20px</span></label>
+            <input type="range" id="mc-size-slider" min="10" max="60" value="20">
+          </div>
+          <div class="color-group">
+            <div class="color-item">
+              <label for="mc-fg-color">Foreground</label>
+              <input type="color" id="mc-fg-color" value="#0f172a">
+            </div>
+            <div class="color-item">
+              <label for="mc-bg-color">Background</label>
+              <input type="color" id="mc-bg-color" value="#ffffff">
+            </div>
+          </div>
+          <button id="btn-download-picture" class="btn-primary" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Download PNG
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: Scan Picture (Offline BFS Pixel Detector) -->
+    <section class="tab-content" id="tab-scanner">
+      <div class="scanner-card">
+        <div class="scanner-header">
+          <h2 class="scanner-title">Offline Image Morse Decoder</h2>
+          <p class="scanner-subtitle">Drop any Morse code picture or scanned sheet. Analyzed 100% locally with BFS shape detection.</p>
+        </div>
+
+        <div class="upload-zone" id="mc-upload-zone">
+          <div class="upload-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          </div>
+          <div class="upload-text">Drag and drop Morse image here</div>
+          <div class="upload-sub">PNG, JPG, WebP — decoded privately in your browser</div>
+          <button id="btn-browse-file" class="browse-btn" type="button">Browse Local File</button>
+          <input type="file" id="mc-file-input" accept="image/*">
+          
+          <div class="progress-wrap" id="mc-progress-wrap">
+            <div class="progress-bar-bg">
+              <div class="progress-bar" id="mc-progress-bar"></div>
+            </div>
+            <div class="status-text" id="mc-status-text">Scanning pixels...</div>
+          </div>
+        </div>
+
+        <div class="scanner-info-box">
+          <div class="info-item">
+            <strong>Zero Server Calls:</strong> All image processing and blob shape clustering happens in offline WebAssembly/Canvas memory.
+          </div>
+          <div class="info-item">
+            <strong>Optimal Results:</strong> Use high-contrast images (dark symbols on white or light background) cropped closely around symbols.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: Audio Synthesizer & Dashboard -->
+    <section class="tab-content" id="tab-audio">
+      <div class="dashboard">
+        <!-- Playback Row -->
+        <div class="dash-row audio-transport">
+          <button id="btn-play-audio" class="btn-primary" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Play Morse
+          </button>
+          <button id="btn-pause-audio" class="btn-sub" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+            Pause
+          </button>
+          <button id="btn-stop-audio" class="btn-sub" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect></svg>
+            Stop
+          </button>
+          <label class="toggle-label" for="repeat-opt">
+            <input type="checkbox" id="repeat-opt"> Repeat
+          </label>
+        </div>
+
+        <!-- Audio Output Options -->
+        <div class="dash-row options-row">
+          <label class="toggle-label" for="sound-opt">
+            <input type="checkbox" id="sound-opt" checked> Sound
+          </label>
+          <label class="toggle-label" for="light-opt">
+            <input type="checkbox" id="light-opt" checked> Light Flash
+          </label>
+          <label class="toggle-label" for="vibrate-opt">
+            <input type="checkbox" id="vibrate-opt"> Vibrate
+          </label>
+          <div class="select-wrapper">
+            <label for="sound-type" class="sr-only">Sound Type</label>
+            <select id="sound-type">
+              <option value="cw">CW Radio Type</option>
+              <option value="telegraph">Telegraph Sounder</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Sliders: Speed, Pitch, Volume -->
+        <div class="dash-row sliders">
+          <div class="slider-group">
+            <label for="speed-slider">Speed <span id="speed-val">20 wpm</span></label>
+            <input type="range" id="speed-slider" min="5" max="50" value="20">
+          </div>
+          <div class="slider-group">
+            <label for="pitch-slider">Pitch <span id="pitch-val">600 Hz</span></label>
+            <input type="range" id="pitch-slider" min="300" max="1000" value="600">
+          </div>
+          <div class="slider-group">
+            <label for="volume-slider">Volume <span id="volume-val">50%</span></label>
+            <input type="range" id="volume-slider" min="0" max="100" value="50">
+          </div>
+        </div>
+
+        <!-- Export & Share Row -->
+        <div class="dash-row actions-row">
+          <button id="btn-save-audio" class="btn-sub" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Save WAV (.wav)
+          </button>
+          <button id="btn-copy-link" class="btn-sub" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            Copy Formatted
+          </button>
+          <button id="btn-clear-all" class="btn-sub" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            Clear All
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: Reference Chart & Guide -->
+    <section class="tab-content" id="tab-chart">
+      <div class="tabs-section">
+        <div class="info-guide">
+          <h2 class="section-title">International Morse Code Chart</h2>
+          <div class="chart-search-bar">
+            <input type="text" id="chart-filter" placeholder="Filter chart (e.g. S, 9, ?)..." spellcheck="false">
+          </div>
+          <div class="chart-grid" id="mc-chart-grid"></div>
+        </div>
+
+        <div class="quick-tips">
+          <h3 class="tips-title">Pro-Tips &amp; Shortcuts</h3>
+          <ul class="tips-list">
+            <li><strong>Word separator:</strong> Use <code>/</code> or double space between words.</li>
+            <li><strong>Keyboard Shortcut:</strong> Press <code>Ctrl+Shift+U</code> (or <code>Cmd+Shift+U</code>) anywhere to pop up the translator.</li>
+            <li><strong>Right-click page:</strong> Highlight any text on any website and select <em>"Translate to Morse Code"</em>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visual Toast Notification -->
+    <div id="mc-toast" class="toast" role="status" aria-live="polite">Done!</div>
+  </div>
+
+  <!-- Local Offline Scripts Only (Zero-CSP Violation) -->
+  <script src="morse-core.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
